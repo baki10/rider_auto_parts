@@ -1,5 +1,6 @@
 package com.bakigoal.spring.route;
 
+import com.bakigoal.spring.processor.DownloadLoggerProcessor;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.spring.SpringRouteBuilder;
@@ -16,6 +17,8 @@ public class FileToJmsAnnotationRoute extends SpringRouteBuilder {
   private static final String JMS_CSV_URI = "jms:csvOrders";
   private static final String JMS_BAD_ORDER_URI = "jms:badOrders";
   private static final String JMS_CONTINUED_PROCESSING = "jms:continuedProcessing";
+  private static final String JMS_PRODUCTION = "jms:production";
+  private static final String JMS_ACCOUNTING = "jms:accounting";
 
   private final String FILE_NAME_HEADER = "CamelFileName";
 
@@ -45,7 +48,8 @@ public class FileToJmsAnnotationRoute extends SpringRouteBuilder {
           public void process(Exchange exchange) throws Exception {
             System.out.println("Received CSV order: " + exchange.getIn().getHeader(FILE_NAME_HEADER));
           }
-        });
+        })
+        .multicast().to(JMS_ACCOUNTING, JMS_PRODUCTION);
 
     from(JMS_CONTINUED_PROCESSING)
         .process(new Processor() {
@@ -53,6 +57,23 @@ public class FileToJmsAnnotationRoute extends SpringRouteBuilder {
             System.out.println("===========================================================");
             System.out.println("Continue from: " + exchange.getIn().getHeader(FILE_NAME_HEADER));
             System.out.println("===========================================================");
+          }
+        });
+
+    from(JMS_ACCOUNTING)
+        .process(new Processor() {
+          public void process(Exchange exchange) throws Exception {
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println("Accounting: " + exchange.getIn().getHeader(FILE_NAME_HEADER));
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+          }
+        });
+    from(JMS_PRODUCTION)
+        .process(new Processor() {
+          public void process(Exchange exchange) throws Exception {
+            System.out.println("###########################################################");
+            System.out.println("Production: " + exchange.getIn().getHeader(FILE_NAME_HEADER));
+            System.out.println("###########################################################");
           }
         });
   }
