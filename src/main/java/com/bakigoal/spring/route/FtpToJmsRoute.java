@@ -1,6 +1,6 @@
 package com.bakigoal.spring.route;
 
-import com.bakigoal.DownloadLoggerProcessor;
+import com.bakigoal.spring.processor.DownloadLoggerProcessor;
 import org.apache.camel.builder.RouteBuilder;
 
 /**

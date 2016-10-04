@@ -1,4 +1,4 @@
-package com.bakigoal;
+package com.bakigoal.spring.processor;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;

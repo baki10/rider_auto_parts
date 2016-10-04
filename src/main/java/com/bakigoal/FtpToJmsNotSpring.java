@@ -1,5 +1,6 @@
 package com.bakigoal;
 
+import com.bakigoal.spring.processor.DownloadLoggerProcessor;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
@@ -14,9 +15,9 @@ import javax.jms.ConnectionFactory;
  * <p>
  * Created by ilmir on 04.10.16.
  */
-public class FtpToJmsExample {
+public class FtpToJmsNotSpring {
 
-  private static final String FTP_URI = "ftp://rider.com/orders?username=rider&password=secret";
+  private static final String FTP_URI = "file:src/data?noop=true";
   private static final String JMS_URI = "jms:queue:incomingOrders";
 
   public static void main(String[] args) throws Exception {
