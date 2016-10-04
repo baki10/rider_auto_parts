@@ -8,6 +8,8 @@ import org.apache.camel.Processor;
  */
 public class DownloadLoggerProcessor implements Processor {
   public void process(Exchange exchange) throws Exception {
-    System.out.println("We just downloaded: " + exchange.getIn().getHeader("CamelFileName"));
+    System.out.println("From: \t" + exchange.getIn());
+    System.out.println("To: \t" + (exchange.getOut()));
+    System.out.println("----------------------------------------");
   }
 }
