@@ -15,6 +15,7 @@ public class FileToJmsAnnotationRoute extends SpringRouteBuilder {
   private static final String JMS_XML_URI = "jms:xmlOrders";
   private static final String JMS_CSV_URI = "jms:csvOrders";
   private static final String JMS_BAD_ORDER_URI = "jms:badOrders";
+  private static final String JMS_CONTINUED_PROCESSING = "jms:continuedProcessing";
 
   private final String FILE_NAME_HEADER = "CamelFileName";
 
@@ -23,10 +24,13 @@ public class FileToJmsAnnotationRoute extends SpringRouteBuilder {
     from(FILE_URI)
         .choice()
         .when(header(FILE_NAME_HEADER).endsWith(".xml")).to(JMS_XML_URI)
-        .when(header(FILE_NAME_HEADER).endsWith(".csv")).to(JMS_CSV_URI)
-        .otherwise().to(JMS_BAD_ORDER_URI);
+        .when(header(FILE_NAME_HEADER).regex("^.*(csv|csl)$")).to(JMS_CSV_URI)
+        .otherwise().to(JMS_BAD_ORDER_URI).stop()
+        .end()
+        .to(JMS_CONTINUED_PROCESSING);
 
     from(JMS_XML_URI)
+        .filter(xpath("/order[not(@test)]"))
         .process(new Processor() {
           public void process(Exchange exchange) throws Exception {
             System.out.println("-----  Received XML order: " + exchange.getIn().getHeader(FILE_NAME_HEADER) + " -----");
@@ -40,6 +44,15 @@ public class FileToJmsAnnotationRoute extends SpringRouteBuilder {
         .process(new Processor() {
           public void process(Exchange exchange) throws Exception {
             System.out.println("Received CSV order: " + exchange.getIn().getHeader(FILE_NAME_HEADER));
+          }
+        });
+
+    from(JMS_CONTINUED_PROCESSING)
+        .process(new Processor() {
+          public void process(Exchange exchange) throws Exception {
+            System.out.println("===========================================================");
+            System.out.println("Continue from: " + exchange.getIn().getHeader(FILE_NAME_HEADER));
+            System.out.println("===========================================================");
           }
         });
   }
