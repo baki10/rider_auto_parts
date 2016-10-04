@@ -9,8 +9,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class SpringDemo {
   public static void main(String[] args) throws InterruptedException {
     ApplicationContext context = new ClassPathXmlApplicationContext("camel-beans.xml", "beans.xml");
-    GreetMeBean greetMeBean = (GreetMeBean) context.getBean("greetMeBean");
-    greetMeBean.greet();
     Thread.sleep(10000);
   }
 }
