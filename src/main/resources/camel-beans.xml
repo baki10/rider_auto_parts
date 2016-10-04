@@ -13,6 +13,10 @@
     <context:component-scan base-package="com.bakigoal.spring"/>
 
     <camel:camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+
+        <!-- let Camel use those @Component scanned route builders -->
+        <contextScan/>
+
         <!--<endpoint id="ridersFtp" uri="ftp://rider.com/orders?username=rider&password=secret"/>-->
 
         <!--<routeBuilder ref="ftpToJmsRoute"/>-->
@@ -32,9 +36,6 @@
         <!--<excludes>**.*Excluded*</excludes>-->
         <!--<includes>**.*</includes>-->
         <!--</packageScan>-->
-
-        <!-- let Camel use those @Component scanned route builders -->
-        <contextScan/>
     </camel:camelContext>
 
 </beans>
