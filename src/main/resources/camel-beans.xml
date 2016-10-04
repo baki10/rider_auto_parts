@@ -7,14 +7,18 @@
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
+    <import resource="jms-setup.xml"/>
+
     <!-- enable Spring @Component scan -->
     <context:component-scan base-package="com.bakigoal.spring"/>
 
     <camel:camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <!--<endpoint id="ridersFtp" uri="ftp://rider.com/orders?username=rider&password=secret"/>-->
+
         <!--<routeBuilder ref="ftpToJmsRoute"/>-->
 
         <!--<route>-->
-        <!--<from uri="file:src/data?noop=true"/>-->
+        <!--<from ref="ridersFtp"/>-->
         <!--<process ref="downloadLogger"/>-->
         <!--<to uri="jms:incomingOrders"/>-->
         <!--</route>-->
@@ -24,27 +28,13 @@
         <!--</route>-->
 
         <!--<packageScan>-->
-            <!--<package>com.bakigoal.spring.route</package>-->
-            <!--<excludes>**.*Excluded*</excludes>-->
-            <!--<includes>**.*</includes>-->
+        <!--<package>com.bakigoal.spring.route</package>-->
+        <!--<excludes>**.*Excluded*</excludes>-->
+        <!--<includes>**.*</includes>-->
         <!--</packageScan>-->
 
         <!-- let Camel use those @Component scanned route builders -->
         <contextScan/>
     </camel:camelContext>
-
-
-    <!--<bean id="ftpToJmsRoute" class="com.bakigoal.spring.route.FtpToJmsRoute"/>-->
-
-    <!--add jmsComponent to camelContext and configure the default ActiveMQ broker URL -->
-    <bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
-        <property name="connectionFactory">
-            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
-                <property name="brokerURL" value="vm://localhost"/>
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="downloadLogger" class="com.bakigoal.DownloadLoggerProcessor"/>
 
 </beans>
