@@ -19,7 +19,7 @@ public class FileToJmsAnnotationRoute extends SpringRouteBuilder {
   private static final String JMS_PRODUCTION = "jms:production";
   private static final String JMS_ACCOUNTING = "jms:accounting";
 
-  private final String FILE_NAME_HEADER = "CamelFileName";
+  private static final String FILE_NAME_HEADER = "CamelFileName";
 
   public void configure() throws Exception {
 
@@ -48,7 +48,8 @@ public class FileToJmsAnnotationRoute extends SpringRouteBuilder {
             System.out.println("Received CSV order: " + exchange.getIn().getHeader(FILE_NAME_HEADER));
           }
         })
-        .multicast().parallelProcessing().to(JMS_ACCOUNTING, JMS_PRODUCTION);
+        .multicast().stopOnException()
+        .parallelProcessing().to(JMS_ACCOUNTING, JMS_PRODUCTION);
 
     from(JMS_CONTINUED_PROCESSING)
         .process(new Processor() {
