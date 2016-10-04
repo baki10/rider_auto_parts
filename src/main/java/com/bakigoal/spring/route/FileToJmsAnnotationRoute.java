@@ -48,7 +48,7 @@ public class FileToJmsAnnotationRoute extends SpringRouteBuilder {
             System.out.println("Received CSV order: " + exchange.getIn().getHeader(FILE_NAME_HEADER));
           }
         })
-        .multicast().to(JMS_ACCOUNTING, JMS_PRODUCTION);
+        .multicast().parallelProcessing().to(JMS_ACCOUNTING, JMS_PRODUCTION);
 
     from(JMS_CONTINUED_PROCESSING)
         .process(new Processor() {
