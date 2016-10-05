@@ -2,7 +2,7 @@ package com.bakigoal.spring.service.impl;
 
 import com.bakigoal.spring.bindy.PurchaseOrder;
 import com.bakigoal.spring.service.OrderService;
-import org.springframework.messaging.handler.annotation.Header;
+import org.apache.camel.Header;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,9 +12,9 @@ import java.math.BigDecimal;
  */
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
-  public PurchaseOrder lookup(@Header(name = "id") String id) {
+  public PurchaseOrder lookup(@Header(value = "id") String id) {
     PurchaseOrder order = new PurchaseOrder();
-    order.setName("Test order");
+    order.setName("Test order " + id);
     order.setPrice(BigDecimal.valueOf(12.2));
     order.setAmount(1);
     return order;
