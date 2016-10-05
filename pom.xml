@@ -12,6 +12,7 @@
         <camel.version>2.17.3</camel.version>
         <activemq.version>5.7.0</activemq.version>
         <spring.version>4.3.3.RELEASE</spring.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
@@ -42,11 +43,23 @@
             <artifactId>camel-spring</artifactId>
             <version>${camel.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-bindy</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
         <!--ActiveMq-->
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
             <version>${activemq.version}</version>
+        </dependency>
+        <!--test-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
