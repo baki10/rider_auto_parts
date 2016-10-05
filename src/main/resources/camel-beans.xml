@@ -17,6 +17,16 @@
         <!-- let Camel use those @Component scanned route builders -->
         <contextScan/>
 
+        <dataFormats>
+            <json id="json" library="Jackson"/>
+        </dataFormats>
+
+        <route>
+            <from uri="jetty://http://0.0.0.0:8080/order"/>
+            <bean ref="orderService" method="lookup"/>
+            <marshal ref="json"/>
+        </route>
+
         <!--<endpoint id="ridersFtp" uri="ftp://rider.com/orders?username=rider&password=secret"/>-->
 
         <!--<routeBuilder ref="ftpToJmsRoute"/>-->
